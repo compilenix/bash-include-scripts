@@ -9,6 +9,11 @@ cat << EOF
 EOF
 }
 
+if [ $# -ne 0 ]; then
+    printHelp;
+    return 1;
+fi
+
 function function_exists {
     declare -f -F $1 > /dev/null;
     return $?;
