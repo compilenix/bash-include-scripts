@@ -6,6 +6,7 @@ include "cursor";
 
 function printHelp {
 cat << EOF
+  runAndEcho            - do a shell-exec / -eval on the first parameter and after that run evaluate_retval
   evaluate_retval       - execute "echo_ok" or "echo_failure", depending on the last exit-code, first parameter is used as message text
   echo_ok               - Print a left aligned green OK sourrounded by brackets, first parameter is used as message text
   echo_failure          - Print a left aligned red FAIL sourrounded by brackets, first parameter is used as message text
@@ -57,4 +58,11 @@ function evaluate_retval {
     else
         echo_failure "$1";
     fi
+}
+
+function runAndEcho {
+    commandToRun="$1";
+
+    eval "$commandToRun";
+    evaluate_retval "$commandToRun";
 }
