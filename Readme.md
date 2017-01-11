@@ -9,3 +9,7 @@ include one or more files.
 ```sh
 . ./include/color.sh;
 ```
+
+# Help?
+
+To get a help text -> `./include/cursor.sh -help`.
