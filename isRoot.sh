@@ -2,7 +2,9 @@
 
 function printHelp {
 cat << EOF
-Return "true" if user is root, else return "false".
+isRoot          - Return "true" if user is root, else return "false".
+    Example:
+    # if [ $(isRoot) = "false" ]; then echo "You must be root, to execute this file!" 2>; fi
 EOF
 }
 
