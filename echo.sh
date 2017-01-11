@@ -2,47 +2,59 @@
 function include { . "$(readlink -f $0)/include/$1.sh"; }
 
 include "color";
-include "cursor.sh";
+include "cursor";
 
 function printHelp {
 cat << EOF
-  evaluate_retval       - execute "echo_ok" or "echo_failure", depending on the last exit-code
-  echo_ok               - Print a left aligned green OK sourrounded by brackets
-  echo_failure          - Print a left aligned red FAIL sourrounded by brackets
-  echo_warning          - Print a left aligned yellow WARN sourrounded by brackets
+  evaluate_retval       - execute "echo_ok" or "echo_failure", depending on the last exit-code, first parameter is used as message text
+  echo_ok               - Print a left aligned green OK sourrounded by brackets, first parameter is used as message text
+  echo_failure          - Print a left aligned red FAIL sourrounded by brackets, first parameter is used as message text
+  echo_warning          - Print a left aligned yellow WARN sourrounded by brackets, first parameter is used as message text
 EOF
 }
 
+if [ $# -ne 0 ]; then
+    printHelp;
+    return 1;
+fi
+
+function echoFixCurrentPos {
+    extract_current_cursor_position currentPos;
+
+    if [ ${currentPos[0]} -gt 0 ]; then
+        echo;
+    fi
+}
+
+function echoStatus {
+    statusText=$1;
+    color=$2;
+    message=$3;
+
+    printf "${color_bblue}[${color}${statusText}${color_bblue}]${color_reset}${message}\n";
+}
+
 function echo_ok {
-	extract_current_cursor_position currentPos;
-
-	if [ ${currentPos[0]} -gt 0 ]; then
-		echo;
-	fi
-
-	echo -n -e "${CURS_UP}${SET_COL}${BRACKET}[${SUCCESS}  OK  ${BRACKET}]"
-	echo -e "${color_reset}"
-	mesg_flush
+    echoFixCurrentPos;
+    echoStatus "  OK  " "${color_bgreen}" "$1";
 }
 
 function echo_failure {
-	echo -n -e "${CURS_UP}${SET_COL}${BRACKET}[${FAILURE} FAIL ${BRACKET}]"
-	echo -e "${color_reset}"
-	mesg_flush
+    echoFixCurrentPos;
+    echoStatus " FAIL " "${color_bred}" "$1";
 }
 
 function echo_warning {
-	echo -n -e "${CURS_UP}${SET_COL}${BRACKET}[${WARNING} WARN ${BRACKET}]"
-	echo -e "${color_reset}"
-	mesg_flush
+    echoFixCurrentPos;
+    echoStatus " WARN " "${color_byellow}" "$1";
 }
 
 function evaluate_retval {
-	error_value="${?}"
+    error_value="${?}";
 
-	if [ ${error_value} = 0 ]; then
-		echo_ok
-	else
-		echo_failure
-	fi
+    if [ ${error_value} = 0 ]; then
+        echo_ok "$1";
+    else
+        echo_failure "$1";
+    fi
 }
