@@ -50,6 +50,11 @@ function echo_warning {
     echoStatus " WARN " "${color_byellow}" "$1";
 }
 
+function echo_info {
+    echoFixCurrentPos;
+    echoStatus " INFO " "${color_bwhite}" "$1";
+}
+
 function evaluate_retval {
     error_value="${?}";
 
