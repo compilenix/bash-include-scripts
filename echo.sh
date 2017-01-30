@@ -1,5 +1,5 @@
 #!/bin/bash
-function include { . "$(dirname $(readlink -f ${0}))/${1}.sh"; }
+function include { . "$(dirname $(readlink -f ${0}))/include/${1}.sh"; }
 
 include "color";
 include "cursor";
