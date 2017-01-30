@@ -1,5 +1,5 @@
 #!/bin/bash
-function include { . "$(readlink -f $0)/include/$1.sh"; }
+function include { . "$(dirname $(readlink -f ${0}))/${1}.sh"; }
 
 include "color";
 include "cursor";
@@ -14,10 +14,12 @@ cat << EOF
 EOF
 }
 
-if [ $# -ne 0 ]; then
-    printHelp;
-    return 1;
-fi
+case "$1" in
+    "help"|"--help"|"-h"|"h")
+        printHelp;
+        return 0;
+    ;;
+esac
 
 function echoFixCurrentPos {
     extract_current_cursor_position currentPos;
@@ -32,7 +34,7 @@ function echoStatus {
     color=$2;
     message=$3;
 
-    printf "${color_bblue}[${color}${statusText}${color_bblue}]${color_reset}${message}\n";
+    printf "${color_bblue}[${color}${statusText}${color_bblue}] ${color_reset}${message}\n";
 }
 
 function echo_ok {

@@ -13,10 +13,12 @@ cat << EOF
 EOF
 }
 
-if [ $# -ne 0 ]; then
-    printHelp;
-    return 1;
-fi
+case "$1" in
+    "help"|"--help"|"-h"|"h")
+        printHelp;
+        return 0;
+    ;;
+esac
 
 function extract_current_cursor_position {
     export $1;

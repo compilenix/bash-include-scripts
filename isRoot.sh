@@ -4,19 +4,23 @@ function printHelp {
 cat << EOF
 isRoot          - Return "true" if user is root, else return "false".
     Example:
-    # if [ $(isRoot) = "false" ]; then echo "You must be root, to execute this file!" 2>; fi
+    # if [ \$(isRoot) = "false" ]; then echo "You must be root, to execute this file!" 2>; fi
 EOF
 }
 
-if [ $# -ne 0 ]; then
-    printHelp;
-    return 1;
-fi
+case "$1" in
+    "help"|"--help"|"-h"|"h")
+        printHelp;
+        return 0;
+    ;;
+esac
 
 function isRoot {
-    if [ ${EUID} == 0 ]; then
+    if [[ ${EUID} -eq 0 ]]; then
         echo "true";
+        return 0;
     fi
 
     echo "false";
+    return 0;
 }

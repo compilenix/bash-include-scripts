@@ -12,4 +12,4 @@ include one or more files.
 
 # Help?
 
-To get a help text -> `./include/cursor.sh -help`.
+`./include/cursor.sh -help`.

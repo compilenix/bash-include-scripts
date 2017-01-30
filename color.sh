@@ -1,4 +1,5 @@
 #!/bin/bash
+
 color_reset='\e[0m';
 
 # Regular
